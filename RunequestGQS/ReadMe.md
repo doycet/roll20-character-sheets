@@ -34,6 +34,111 @@ To remove the experience checkbox from a skill add a - at the start of the name 
 
 STR and DEX minimums are not currently supported this maybe added in a future release.
 
+## 06.06.2021 
+       Added translation tags for buff spells and hit point labels
+       Fixed issues with a number of translation tags.
+
+## 31.05.2021
+	Changes to sheet so that layout does not break when legacy sheet toggle is switched off
+	
+	HTML datalists added to provide a dropdown for weapons. Note that datalist do not behave as comboboxes the list limited based on the content of the input.
+	
+	Fixed. Hit Locations table 1-4 should be the right leg but is the left, 5-8 should be the left leg but is the right
+	
+	Fixed Improvement rolls which roll exactly the threshold to increase. 
+	
+	Removed yellow box around roll results for improvement rolls
+	
+	The skill value for a weapon skill name that does not exist or is spelt incorrectly will be set to 0
+	
+	Added ability to translate rune affinity labels
+	
+	Fixed wrapping of attribute text labels on Firefox
+	
+	Fixed issues with buff spells
+	
+	Fixed fumble breakpoints for Honor, Passions and Spirit Combat
+	
+	Added Ritual to spell duration for Spirit Magic.
+	
+	Fixed 2nd Button under Spirit Magic to behave correctly.
+	
+	Added Cast label to clarify buttons under Spirit Magic.
+	
+	Fixed criticals < 10%
+	
+	Added input for bonuses to spirit combat damage
+	
+	Changed critical crush  damage from full weapon damage + max damage bonus + rolled damage bonus to weapon damage + max damage bonus + max damage bonus
+	
+
+
+## 14.12.2019
+	Mobility and Coordination now reducing SR for Melee Weapons
+
+## 17.07.2019
+	fixed bug adding more than 1 magic point storag item. Another mp storage section was added. New characters created will only show the new section.  Existing characters will have red notice for the user to copy item and direct them to a configuration section to hide the old section.
+	
+	fixed bug in Coordination spell
+	
+	Added support for Mobilty spell
+	
+	fix.  2nd mount/alley displaying 1st mount/ally name in roll templates
+	
+
+## 22.04.2019
+	Fix Move Quietly modifiers were being totalled now takes the highest.
+	
+	Tided up the Experience Roll button beside the category modifier, it now uses a Roll template and asks for a skill value to compare it against.
+
+	
+
+## 08.04.2019 Version 
+
+	fix SR for default natural weapons should be 4 not 3
+	
+	fix some users reporting  issues with power rune labels. Replaced graphics for power runes
+	
+	fix enc modifier not applied to stealth
+	
+	Added Move Quietly modifiers to equipment 
+	
+	Added macro code to roll with modifiers on Honor button.
+	
+	Added support for Coordination spell
+	
+	Added support to add turn order entries based on missile weapon strike ranks.
+	
+	Added support for Coordination spell
+	
+	
+	
+	
+
+## Version 04.03.2019
+
+Tweaked CSS so skill names can be read when modifying repeating sections
+
+Added fields for coinage on the 2nd tab.  Currently this does not effect encumbrance.
+
+I added a bunch of new hit locations including all the location tables  at the start of the bestiary. 
+
+Added fields for individual weapons skill modifiers or occasions such as Bladesharp cast.
+
+
+
+I also added checkboxes with the heading Spells Cast for Vigor, Strength  and Glamour they handle all the fudges listed under the spells,such as skill category  increases, damage die steps and max enc.So don't add the stat bonuses in the mod fields of the characteristics.The bonuses are automatically added to stat rolls. A message appears under the stats  reminding you to add the bonus when doing resistance table rolls.  There is probably better way of doing this but it would mean changing a lot of sheetworkers and/or adding a whole new column of mod fields
+
+
+## Version 17.03.2019
+Fix for issue of browser cursor not detecting add control for equipment.  Reduced the width of the repeating section in case columns where overlapping.
+
+Changed the way version number was displayed .A attribute was removed but it will not effect the end user. 
+
+Changed the path for button images and roll templates images to point to images in Roll20 repository.	
+
+
+
 ## Version 19.11.2018
 
 Disguise starting skill changed to 05
@@ -95,4 +200,3 @@ Fixed crush damage on special
 Removed border highlighting on damage
 
 Fixed some of the fumble calculations (characteristc rolls and weapons).
-

@@ -7,6 +7,18 @@ Versions have three numbers Major.Minor.Release
 
 **Release**: Indicates bugfixes and minor UI changes only.
 
+## 2.0.3
+* Added Jakob's Better Default Rolltemplate
+* added all 66 of roll20 Character/ping colors to the Rolltemplate
+* added total experiance as I had many asking for it. 
+
+## 2.0.2
+### Removed Autocalc fields and minor changes
+* removed autocalc fields now on sheetworker 
+* added a Roll20userid
+* added "Mounts' for Loremaster and Adversary sheets
+* added background for Loremaster and Adversary sheets to better fit with the new PC sheet
+ 
 ## 2.0.1
 
 ### Bug fixes and minor changes
