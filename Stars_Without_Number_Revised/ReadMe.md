@@ -16,6 +16,7 @@ This sheet is created for use in Stars Without Number Revised Edition on Roll20.
 * [RonaldZ](https://github.com/RonaldZ)
 * [jfredett](https://github.com/jfredett)
 * [CoalPoweredPuppet](https://github.com/CoalPoweredPuppet)
+* [trevor-coleman](https://github.com/trevor-coleman)
 * Original First Edition sheet by [Kevin Searle](https://github.com/kevinsearle)
 
 ## QA/Testing
@@ -42,6 +43,32 @@ Npm is now watching all the files for changes and compiling as you go.
 If you want to compile everything just once, use `npm run build` instead.
 
 ## Changelog
+
+## 2.7.0
+* Add Adventurer Subclass options and autofill data
+
+## 2.6.5
+
+* Fix icon link broken by external service.
+
+## 2.6.4
+
+* Fix weapon AB not displaying correctly with the Sunblade skill.
+
+### 2.6.3
+
+* Fix quick menus giving "unrecognised command /w".
+
+### 2.6.2
+
+* Fix rolltemplates not being migrated properly to CSE.
+
+### 2.6.1
+
+* Add datalists to most free-fill fields with autofilling
+  * Drones, drone fittings, ship hulltypes, class
+* Update sheet to use the new Character Sheet Enhancement sanitiser.
+* Some TypeScript refactoring.
 
 ### 2.6.0
 

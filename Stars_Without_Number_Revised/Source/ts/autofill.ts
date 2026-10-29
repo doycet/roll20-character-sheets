@@ -1,18 +1,54 @@
 ///<reference path="constants.ts"/>
 ///<reference path="util.ts"/>
 
+const fillAdventurerClassStats = (
+  label: string
+): Record<string, number | string | boolean> => {
+  const { partialPsychic, partialWarrior, partialExpert } =
+    autofillData.classes;
+  let data = { class_ability: "" } as Record<string, number | string | boolean>;
+  const fillPartialClassStats = (
+    keyName: string,
+    partialData:
+      | typeof partialExpert
+      | typeof partialPsychic
+      | typeof partialWarrior
+  ) => {
+    if (label.includes(keyName)) {
+      data = {
+        ...partialData,
+        class_ability: `${data.class_ability}${partialData.class_ability}\n`,
+      };
+    }
+  };
+  fillPartialClassStats("expert", partialExpert);
+  fillPartialClassStats("psychic", partialPsychic);
+  fillPartialClassStats("warrior", partialWarrior);
+  return data;
+};
+
 /* Autofill stuff */
-const fillClassStats = () => {
-    getAttrs(["class", "class_ability", "attack_bonus"], v => {
-        const label = v.class && reverseClasses[v.class ? v.class.toLowerCase() : ""];
-        if (label && autofillData.classes.hasOwnProperty(label)) {
-            const data: {[key: string]: string | false} = Object.assign({}, autofillData.classes[label]);
-            Object.keys(data).forEach(key => {
-                if (!(["", "0"].includes(`${v[key]}`))) delete data[key];
-            });
-            mySetAttrs(data, v);
-        }
+const fillClassStats = <T extends keyof typeof autofillData.classes>() => {
+  getAttrs(["class", "class_ability", "attack_bonus"], (v) => {
+    const label =
+      v.class && reverseClasses[v.class ? v.class.toLowerCase() : ""];
+    if (!label) return;
+    let data = {};
+    if (label.startsWith("adventurer")) {
+      data = fillAdventurerClassStats(label);
+    } else if (autofillData.classes.hasOwnProperty(label)) {
+      data = Object.assign(
+        {},
+        autofillData.classes[label as keyof typeof autofillData.classes]
+      );
+    }
+    Object.keys(data).forEach((key) => {
+      if (!["", "0"].includes(`${v[key]}`)) {
+        delete data[key as keyof typeof data];
+      }
     });
+    mySetAttrs(data, v);
+  });
 };
 const getShipMultiplier = (shipClass: string) => {
     if ((shipClass || "").toLowerCase() === "frigate") return 2;
@@ -179,28 +215,29 @@ const getAutofillInfo = ({sName, v, data, label}: AutofillData) => {
     }
     return "";
 };
-const generateAutofillRow = (sName: string) => {
+
+const generateAutofillRow = (sName: Exclude<keyof typeof autofillData, 'droneFittings'>) => {
     // Event handler for generating a new row when button is pressed
     getAttrs([`generate_${sName}_source`, "ship_class"], v => {
         const label = v[`generate_${sName}_source`];
         v.ship_multiplier = getShipMultiplier(v.ship_class).toString();
         v.ship_price_multiplier = getShipPriceMultiplier(v.ship_class).toString();
         if (label && autofillData[sName].hasOwnProperty(label)) {
-            const data = getAutofillData({sName : sName, v : v, data : autofillData[sName][label], label : label});
+            const data = getAutofillData({sName : sName, v : v, data : autofillData[sName][label as keyof typeof autofillData[typeof sName]], label : label});
             delete data.class;
             delete data.level;
             fillRepeatingSectionFromData(sName, data);
         }
     });
 };
-const generateAutofillInfo = (sName: string) => {
+const generateAutofillInfo = (sName: Exclude<keyof typeof autofillData, 'droneFittings'>) => {
     // Event handler for showing info about the selected item
     getAttrs([`generate_${sName}_source`, "ship_class"], v => {
         const label = v[`generate_${sName}_source`];
         v.ship_multiplier = getShipMultiplier(v.ship_class).toString();
         v.ship_price_multiplier = getShipPriceMultiplier(v.ship_class).toString();
         if (label && autofillData[sName].hasOwnProperty(label)) {
-            const info = getAutofillInfo({sName: sName, v: v, data: autofillData[sName][label], label: label});
+            const info = getAutofillInfo({sName: sName, v: v, data: autofillData[sName][label as keyof typeof autofillData[typeof sName]], label: label});
             if (info) setAttrs({
                 [`generate_${sName}_info`]: info
             });

@@ -2,7 +2,7 @@
 
 /* Data constants */
 const sheetName = "Stars Without Number (revised)";
-const sheetVersion = "2.6.0";
+const sheetVersion = "2.7.0";
 const translate = getTranslationByKey;
 const attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"];
 const effortAttributes = ["wisdom_mod", "constitution_mod", "psionics_extra_effort",
@@ -21,7 +21,7 @@ const shipStatEvent = [
 const weaponSkills = [
     "skill_exert", "skill_punch", "skill_shoot", "skill_stab", "skill_combat_energy",
     "skill_combat_gunnery", "skill_combat_primitive", "skill_combat_projectile",
-    "skill_combat_psitech", "skill_combat_unarmed", "skill_telekinesis"
+    "skill_combat_psitech", "skill_combat_unarmed", "skill_telekinesis", "skill_sunblade"
 ];
 const weaponDisplayEvent = [
     ...["attack", "name", "skill_bonus", "attribute_mod", "damage", "shock", "shock_damage",
@@ -51,6 +51,9 @@ const skills: {[key: string]: string[]} = {
 const shipStats = ["ship_ac", "ship_armor", "ship_class", "ship_crew_max", "ship_crew_min",
     "ship_hardpoints_max", "ship_hp", "ship_hp_max", "ship_mass_max", "ship_power_max", "ship_speed", "ship_hull_price",
 ];
+
+type ReverseHullTypes = 'battleship' | 'bulk_freighter' | 'carrier' | 'corvette' | 'fleet_cruiser' | 'free_merchant' | 'heavy_frigate' | 'large_station' | 'patrol_boat' | 'small_station' | 'strike_fighter' | 'shuttle'
+
 const reverseHullTypes = {
     [translate("BATTLESHIP").toString().toLowerCase()]: "battleship",
     [translate("BULK_FREIGHTER").toString().toLowerCase()]: "bulk_freighter",
@@ -61,7 +64,7 @@ const reverseHullTypes = {
     [translate("HEAVY_FRIGATE").toString().toLowerCase()]: "heavy_frigate",
     [translate("LARGE_STATION").toString().toLowerCase()]: "large_station",
     [translate("PATROL_BOAT").toString().toLowerCase()]: "patrol_boat",
-    [translate("SMALL_STATION").toString().toLowerCase()]: "small station",
+    [translate("SMALL_STATION").toString().toLowerCase()]: "small_station",
     [translate("STRIKE_FIGHTER").toString().toLowerCase()]: "strike_fighter",
     [translate("SHUTTLE").toString().toLowerCase()]: "shuttle",
 };
@@ -70,9 +73,16 @@ const reverseClasses = {
     [translate("EXPERT").toString().toLowerCase()]: "expert",
     [translate("PSYCHIC").toString().toLowerCase()]: "psychic",
     [translate("WARRIOR").toString().toLowerCase()]: "warrior",
+  [translate("ADVENTURER_EXPERT_PSYCHIC").toString().toLowerCase()]:
+    "adventurer (expert/psychic)",
+  [translate("ADVENTURER_EXPERT_WARRIOR").toString().toLowerCase()]:
+    "adventurer (expert/warrior)",
+  [translate("ADVENTURER_PSYCHIC_WARRIOR").toString().toLowerCase()]:
+    "adventurer (psychic/warrior)",
 };
 const autofillSections = ["armor", "cyberware", "foci", "gear", "ship-defenses", "ship-fittings", "ship-weapons", "techniques", "weapons"];
-const autofillData: {[key: string]: {[key: string]: {[key: string]: string | false}}} = {
+type AutofillSectionsKey = "armor" | "cyberware" | "foci" | "gear" | "ship-defenses" | "ship-fittings" | "ship-weapons" | "techniques" | "weapons"
+const autofillData = {
     "classes": {
         adventurer: {
             class_ability: translate("ADVENTURER_CLASS_ABILITY"),
@@ -86,6 +96,16 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
         warrior: {
             attack_bonus: "1",
             class_ability: translate("WARRIOR_CLASS_ABILITY"),
+        },
+        partialExpert: {
+            class_ability: translate("PARTIAL_EXPERT_CLASS_ABILITY"),
+        },
+        partialPsychic: {
+            class_ability: translate("PARTIAL_PSYCHIC_CLASS_ABILITY"),
+        },
+        partialWarrior: {
+            attack_bonus: "1",
+            class_ability: translate("PARTIAL_WARRIOR_CLASS_ABILITY"),
         },
     },
     "drones": {
@@ -158,26 +178,24 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             drone_price: "5000",
         },
     },
-    "droneFittings": {
-        default: {
-            "ammo_unit": "",
-            "bomber": "",
-            "environmental_power": "",
-            "expert_system": "",
-            "extended_flight": "",
-            "grav_muffles": "",
-            "heavy_lift": "",
-            "holoskin": "",
-            "medical_support": "",
-            "observation_suite": "",
-            "racing_gravitics": "",
-            "reinforced_structure": "",
-            "sensor_transparency": "",
-            "stationkeeping": "",
-            "suicide_charge": "",
-            "weapon_fitting": ""
-        }
-    },
+    "droneFittings": [
+            "ammo_unit",
+            "bomber",
+            "environmental_power",
+            "expert_system",
+            "extended_flight",
+            "grav_muffles",
+            "heavy_lift",
+            "holoskin",
+            "medical_support",
+            "observation_suite",
+            "racing_gravitics",
+            "reinforced_structure",
+            "sensor_transparency",
+            "stationkeeping",
+            "suicide_charge",
+            "weapon_fitting",
+    ],
     "hulltypes": {
         battleship: {
             ship_ac: "16",
@@ -371,6 +389,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "12",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         companion_bot: {
             npc_hd: "1",
@@ -382,6 +401,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "6",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         elite_fighter: {
             npc_hd: "3",
@@ -405,6 +425,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "9",
             npc_skills: "2",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         gang_member: {
             npc_hd: "1",
@@ -416,6 +437,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "7",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         geneengineered_killer: {
             npc_hd: "4",
@@ -427,6 +449,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "10",
             npc_skills: "2",
             npc_saves: "13",
+            npc_armor_type: "",
         },
         geneengineered_murder_beast: {
             npc_hd: "10",
@@ -438,6 +461,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "12",
             npc_skills: "3",
             npc_saves: "10",
+            npc_armor_type: "",
         },
         greater_lone_predator: {
             npc_hd: "5",
@@ -449,6 +473,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "9",
             npc_skills: "2",
             npc_saves: "12",
+            npc_armor_type: "",
         },
         heavy_warbot: {
             npc_hd: "6",
@@ -460,6 +485,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "10",
             npc_skills: "2",
             npc_saves: "12",
+            npc_armor_type: "",
         },
         heroic_fighter: {
             npc_hd: "6",
@@ -483,6 +509,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "14",
+            npc_armor_type: "",
         },
         janitor_bot: {
             npc_hd: "1",
@@ -494,6 +521,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         large_aggressive_prey_animal: {
             npc_hd: "5",
@@ -505,6 +533,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "12",
+            npc_armor_type: "",
         },
         large_pack_hunter: {
             npc_hd: "2",
@@ -516,6 +545,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "9",
             npc_skills: "1",
             npc_saves: "14",
+            npc_armor_type: "",
         },
         legendary_fighter: {
             npc_hd: "10",
@@ -539,6 +569,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "2",
             npc_saves: "14",
+            npc_armor_type: "",
         },
         martial_human: {
             npc_hd: "1",
@@ -550,6 +581,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         military_elite: {
             npc_hd: "3",
@@ -585,6 +617,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "6",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         peaceful_human: {
             npc_hd: "1",
@@ -596,6 +629,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "6",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         pirate_king: {
             npc_hd: "7",
@@ -619,6 +653,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         repair_bot: {
             npc_hd: "1",
@@ -630,6 +665,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         serial_killer: {
             npc_hd: "6",
@@ -641,6 +677,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "12",
             npc_skills: "3",
             npc_saves: "12",
+            npc_armor_type: "",
         },
         skilled_professional: {
             npc_hd: "1",
@@ -652,6 +689,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "6",
             npc_skills: "2",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         small_pack_hunter: {
             npc_hd: "1",
@@ -663,6 +701,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "8",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         small_vicious_beast: {
             npc_hd: "1hp",
@@ -674,6 +713,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "7",
             npc_skills: "1",
             npc_saves: "15",
+            npc_armor_type: "",
         },
         soldier_bot: {
             npc_hd: "2",
@@ -685,6 +725,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "10",
             npc_skills: "1",
             npc_saves: "14",
+            npc_armor_type: "",
         },
         terrifying_apex_predator: {
             npc_hd: "8",
@@ -696,6 +737,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "9",
             npc_skills: "2",
             npc_saves: "11",
+            npc_armor_type: "",
         },
         veteran_fighter: {
             npc_hd: "2",
@@ -707,6 +749,7 @@ const autofillData: {[key: string]: {[key: string]: {[key: string]: string | fal
             npc_morale: "9",
             npc_skills: "1",
             npc_saves: "14",
+            npc_armor_type: "",
         },
         warrior_tyrant: {
             npc_hd: "8",

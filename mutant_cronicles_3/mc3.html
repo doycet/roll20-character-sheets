@@ -6,7 +6,7 @@
             <!--  Identification   -->
             <div class="sheet-char-identification">
                 <div class="sheet-logo">
-                    <img alt="Mutant Cronicles" src="https://github.com/ganonkevlar/roll20-character-sheets-images-mutant_chronicles_3-/raw/main/mcLogo.png"/>
+                    <img alt="Mutant Cronicles" src="https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/mutant_cronicles_3/mcLogo.png"/>
                 </div>
 
                 <div class="sheet-header">Name</div>
@@ -797,7 +797,7 @@
         <!--  Talents  -->
         <div class="sheet-header">
             Talents
-            <button type='roll' name='roll_info_talents' class="sheet-info-button" value='&{template:info_talents}'></button>
+            <button type='roll' name='roll_info_talents' class="sheet-info-button" value='&{template:info_talents} {{fakeRoll=[[1d2]]}}'></button>
         </div>
         <div class="sheet-section">
 
@@ -938,7 +938,7 @@
 
         <div class="sheet-header">
             Attibutes & Skills
-            <button type='roll' name='roll_info_skillrolls' class="sheet-info-button" value='&{template:info_skillroll}'></button>
+            <button type='roll' name='roll_info_skillrolls' class="sheet-info-button" value='&{template:info_skillroll} {{fakeRoll=[[1d2]]}}'></button>
         </div>
 
         <div class="sheet-section">
@@ -1492,7 +1492,7 @@
 <!--START WEAPON-->
 <div class="sheet-header">
     Weapons
-    <button type='roll' name='roll_info_weapons' class="sheet-info-button" value='&{template:info_weapons}'></button>
+    <button type='roll' name='roll_info_weapons' class="sheet-info-button" value='&{template:info_weapons} {{fakeRoll=[[1d2]]}}'></button>
 </div>
 <div class="sheet-section">
 
@@ -1841,6 +1841,10 @@
         </div>
     </div>
 </rolltemplate>
+
+
+
+
 
 
 

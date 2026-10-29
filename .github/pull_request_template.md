@@ -1,19 +1,19 @@
-## Changes / Comments
+> [!NOTE]
+> Unsure about something? Open a **Draft PR** and ask — we'd rather help than reject.
+>
+> Adding a **new sheet**? Use the new-sheet template instead: run `gh pr create --template new_sheet.md`, or append `?template=new_sheet.md` to the compare URL.
 
+## Title
 
+Format: `[Sheet Name] Change Type: Description` — e.g. `[D&D5e] Bugfix: Fix spell slot rollover`
 
+## Checklist (all required)
 
+- [ ] Title follows the format above
+- [ ] Changes are limited to a single sheet folder
+- [ ] No changes to `translations/*.json` (the sheet's own `translation.json` is fine)
+- [ ] No publisher IP (logos, art, rules text) without documented permission
 
+## Description
 
-## Roll20 Requests
-
-Comments are very helpful for reviewing the code changes. Please answer the relevant questions below in your comment.
-
-- [ ] Does the pull request title have the sheet name(s)? Include each sheet name.
-- [ ] Is this a bug fix?
-- [ ] Does this add functional enhancements (new features or extending existing features) ?
-- [ ] Does this add or change functional aesthetics (such as layout or color scheme) ? 
-- [ ] If changing or removing attributes, what steps have you taken, if any, to preserve player data ?
-- [ ] If this is a new sheet, did you follow [Building Character Sheets standards](https://wiki.roll20.net/Building_Character_Sheets#Roll20_Character_Sheets_Repository) ?
-
-If you do not know English. Please leave a comment in your native language.
+<!-- What changed and why. Link related issues/PRs. -->
